@@ -1,11 +1,15 @@
-version: '2'
+version: '2.1'
 services:
-  temp_logger:
+  temp_logger_2:
     image: dht22-docker
-    container_name: temp_logger
+    container_name: temp_logger_1.1
     restart: always
     devices:
       - "/dev/ttyAMA0:/dev/ttyAMA0"
       - "/dev/mem:/dev/mem"
     privileged: true
-
+    healthcheck:
+      test: ["CMD", "python", "--version"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
