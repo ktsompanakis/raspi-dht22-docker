@@ -1,8 +1,8 @@
 version: '2.1'
 services:
-  temp_logger_2:
+  temp_logger:
     image: dht22-docker
-    container_name: temp_logger_1.1
+    container_name: temp_logger
     restart: always
     devices:
       - "/dev/ttyAMA0:/dev/ttyAMA0"
