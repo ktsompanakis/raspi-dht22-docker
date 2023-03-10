@@ -5,5 +5,5 @@ Read temperature and humidity from DHT22 attached to Raspberry Pi running inside
 
 - Configure the DHT_DATA_PIN inside `temp_humidity.py`
 - Add your ADAFRUIT_IO_KEY, ADAFRUIT_IO_USERNAME and Adafruit IO Feeds to `temp_humidity.py`
-- Build image with `docker build -t dht22-docker .`
+- Build image with `docker-compose build`
 - Bring up app with `docker-compose up -d`

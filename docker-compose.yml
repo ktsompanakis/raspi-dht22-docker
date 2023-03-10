@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   temp_logger:
-    image: dht22-docker
+    build: .
     container_name: temp_logger
     restart: always
     devices:
@@ -13,3 +13,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 10
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+        max-file: "1"

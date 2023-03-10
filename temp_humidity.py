@@ -49,15 +49,20 @@ humidity_feed = aio.feeds('{YOUR_HUMIDITY_FEED}')
 # Set up DHT22 Sensor.
 dht22_sensor = Adafruit_DHT.DHT22
 
-# Set thresholds.
-hum_threshold = 101
-temp_threshold = 101
+# Set initial values
+prev_hum, prev_temp = Adafruit_DHT.read_retry(dht22_sensor, DHT_DATA_PIN)
+print('Initial Values: Temp={0:0.1f}*C | Humidity={1:0.1f}%'.format(prev_temp, prev_hum))
 
 while True:
     timestamp = time.ctime()
     humidity, temperature = Adafruit_DHT.read_retry(dht22_sensor, DHT_DATA_PIN)
-    if humidity <= hum_threshold and temperature <= temp_threshold:
+    if abs(humidity - prev_hum) < 10 and abs(temperature - prev_temp) < 10:
         print('Timestamp={0} | Temp={1:0.1f}*C | Humidity={2:0.1f}%'.format(timestamp, temperature, humidity))
+
+        # Store values
+        prev_hum = humidity
+        prev_temp = temperature
+
         # Send humidity and temperature feeds to Adafruit IO
         temperature = '%.2f'%(temperature)
         humidity = '%.2f'%(humidity)
@@ -65,5 +70,6 @@ while True:
         aio.send(humidity_feed.key, str(humidity))
     else:
         print('Failed to get DHT22 Reading, trying again in ', DHT_READ_TIMEOUT, 'seconds')
+
     # Timeout to avoid flooding Adafruit IO
     time.sleep(DHT_READ_TIMEOUT)
